@@ -1,0 +1,201 @@
+// import functions and variables for reference
+@import "bootstrap_source/_functions";
+@import "bootstrap_source/_variables";
+
+
+// COLOR
+// ==========================================
+$blue: #0b59b9;
+$indigo: #04196d;
+$purple: #25005b;
+$pink: #f6bcba;
+$red: #ea0000;
+$orange: #ff6f00;
+$yellow: #ffea40;
+$green: #368b36;
+$teal: #369187;
+$cyan: #3697d9;
+$white: #fcfbf9;
+$black: #16120f;
+$gray: #e6e3df;
+$gray-dark: #aca095;
+
+$brown-light: #c4b099;
+$brown-dark: #5c4531;
+$blue-muted: #1b4b6c;
+$green-muted: #0b522e;
+$red-muted: #811d1d;
+$olive-muted: #758974;
+$orange-muted: #ffa500;
+
+
+$primary: $brown-light;
+$secondary: $brown-dark;
+$success: $green-muted;
+$info: $blue-muted;
+$warning: $orange-muted;
+$danger: $red-muted;
+$light: $gray;
+$dark: $black;
+
+$theme-colors: (
+	primary: $primary,
+	secondary: $secondary,
+	success: $success,
+	info: $info,
+	warning: $warning,
+	danger: $danger,
+	light: $light,
+	dark: $dark,
+);
+
+$body-bg: $light;
+$body-color: $dark;
+
+
+
+
+
+
+
+
+
+
+// TYPOGRAPHY
+// =====================
+$font-family-sans-serif: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-serif: "Zilla Slab", "American Typewriter", Georgia, "Times New Roman", Times, serif;
+$font-family-monospace: "IBM Plex Mono", "American Typrewriter", "Courier New", monospace;
+$font-family-base: $font-family-sans-serif;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 600;
+
+
+$headings-font-family: "Zilla Slab";
+$headings-font-weight: 600;
+$h1-font-size: $font-size-base * 2;
+$h2-font-size: $font-size-base * 1.8;
+$h3-font-size: $font-size-base * 1.6;
+$h4-font-size: $font-size-base * 1.4;
+$h5-font-size: $font-size-base * 1.2;
+$h6-font-size: $font-size-base;
+
+
+$text-muted: $gray-dark;
+$blockquote-small-color: $gray-dark;
+
+
+$navbar-brand-font-size: $h1-font-size;
+$navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$black}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// BODY/TOP-LEVEL STYLES
+// ==========================================================
+
+// Maxx 900px body width
+body {
+	width: 100%; 
+}
+
+@media (min-width: 960px) {
+	body {
+		max-width: 900px;
+	}
+}
+
+// Slab-serif font
+.slab {
+	font-family: 'Zilla Slab';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// HEADER, NAV, TOGGLER, ETC.
+// =============================
+
+// Toggler tweaks
+#toggler.navbar-toggler {
+	background-color: transparent;
+	color: $black;
+	border: none;
+}
+
+#toggler.btn:hover, #toggler.btn:active, #toggler.btn:focus, #toggler.btn.focus {
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem $black;
+}
+
+// Nav menu link styling
+a.menu-link, a.menu-link:link, a.menu-link:visited {
+	color: $gray-dark;
+	text-decoration: none;
+	font-family: "Zilla Slab";
+}
+
+a.menu-link:hover, a.menu-link:focus, a.menu-link:active {
+	color: $light;
+	text-decoration: underline;
+}
+
+a.menu-active {
+	pointer-events: none;
+	cursor: default;
+	color: $light;
+	text-decoration: none;
+	font-family: "Zilla Slab";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Import Bootstrap source 
+// =========================================
+@import "bootstrap_source/bootstrap";

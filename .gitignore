@@ -1,0 +1,10 @@
+~*
+*~
+$*
+*.swp
+*.un
+
+design/
+reference/
+wip/
+
