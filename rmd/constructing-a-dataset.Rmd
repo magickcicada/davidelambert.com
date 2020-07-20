@@ -14,7 +14,7 @@ output:
     lib_dir: assets/vendor/rmarkdown
 ---
 
-The following constructs a county-level dataset of demographic & economic data, mostly from the American Community Survey, the Bureau of Labor Statistics, and the National Center for Health Statistics. These data are used to construct a modified version of the Human Development Index as a benchmark of the quality of life for each county in the US. This project stemmed from another project involving voter turnout rates in the 2016 election, so vutrnout estimates are also included.
+The following constructs a county-level dataset of demographic & economic data, mostly from the American Community Survey, the Bureau of Labor Statistics, and the National Center for Health Statistics. These data are used to construct a modified version of the Human Development Index as a benchmark of the quality of life for each county in the US. This project stemmed from another project involving voter turnout rates in the 2016 election, so turnout estimates are also included.
 
 This is a VERY LONG POST, so sorry in advance. There's a story behind it, but it's long enough without one! I'm planning several other posts with visualizations and models based on this dataset, so I'll update with a link to the background at some point.
 

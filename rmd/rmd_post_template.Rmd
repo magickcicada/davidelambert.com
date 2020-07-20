@@ -5,7 +5,7 @@ date: '2019-07-02'
 output:
   html_document:
     theme: null
-    highlight: null
+    highlight: tango
     includes:
       in_header: assets/templates/rmd_head.html
       before_body: assets/templates/rmd_pre.html
