@@ -199,13 +199,13 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: #bf2b2b;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #0056b3;
+  color: #811d1d;
   text-decoration: underline;
 }
 
@@ -3418,12 +3418,12 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #007bff;
+  color: #bf2b2b;
   text-decoration: none;
 }
 
 .btn-link:hover {
-  color: #0056b3;
+  color: #811d1d;
   text-decoration: underline;
 }
 
