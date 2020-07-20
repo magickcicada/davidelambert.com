@@ -67,6 +67,7 @@ div.sourceCode {
 pre.sourceCode {
     margin: 0;
     padding: 1rem 1.5rem;
+    background-color: var(--gray);
 }
 
 @media screen {

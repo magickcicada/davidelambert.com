@@ -55,7 +55,7 @@ $body-color: $dark;
 $link-color: lighten($red-muted, 15%);
 $link-hover-color: darken($link-color, 10%);
 
-
+$code-color: $blue;
 
 
 
@@ -127,9 +127,6 @@ body {
 .slab {
 	font-family: 'Zilla Slab';
 }
-
-
-
 
 
 
