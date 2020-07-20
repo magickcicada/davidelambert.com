@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="David E. Lambert" />
+
+<meta name="date" content="2019-07-02" />
+
+<title>Combined Density/Box Plots</title>
+
+<script src="assets/vendor/rmarkdown/header-attrs-2.3/header-attrs.js"></script>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Zilla+Slab:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/theme.min.css">
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+</head>
+
+<body>
+
+
+<!-- IMPORT CUSTOM CODE STYLING (**AFTER** rmarkdown/pandoc PREAMBLE) -->
+<link rel="stylesheet" href="/assets/css/highlight.css">
+
+
+<!-- BEGIN HEADER NAV -->
+<header id="headNav">
+
+    <!-- COLLAPSED HEADER & TOGGLER -->
+    <div class="navbar navbar-light bg-primary">
+        <div class="container d-flex">
+            <a class="navbar-brand slab px-0">
+                <strong>David E. Lambert</strong>
+            </a>
+            <button id="toggler" class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expaned="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- EXPANDED NAV MENU/BIO -->
+    <div id="mainNav" class="collapse bg-dark">
+        <div class="container">
+            <div class="row">
+
+
+                <!-- TAG/BIO FOR LARGE SCREENS -->
+                <div class="col d-none d-md-inline-block col-md-10 py-4 pl-4 pl-lg-5">
+                    <h5 class="text-light">
+                        Data Analysis // Data Visualization // Graphic Design
+                    </h5>
+                </div>
+
+                <!-- TAG ONLY FOR SMALLER SCREENS -->
+                <div class="col d-md-none col-6 py-4 pl-5">
+                    <h5 class="text-light">
+                        Data Analysis<br />
+                        Data Visualization<br />
+                        Graphic Design
+                    </h5>
+                </div>
+
+                <!-- NAV MENU -->
+                <div class="col d-inline-block py-4 mr-4 mr-lg-5">
+                    <h5 class="text-light text-right">Menu</h5>
+                    <ul class="list-unstyled text-right">
+                        <li>
+                            <a href="index.html" class="menu-link">Home</a>
+                        </li>
+                        <li>
+                            <a href="projects.html" class="menu-link">Projects</a>
+                        </li>
+                        <li>
+                            <a href="blog.html" class="menu-link">Blog</a>
+                        </li>
+                        <li>
+                            <a href="about.html" class="menu-link" >About</a>
+                        </li>
+                        <li>
+                            <a href="contact.html" class="menu-link">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- END ROW -->
+        
+        </div>
+        <!-- END CONTAINER -->
+
+    </div>
+    <!-- END EXPANDED NAV/BIO -->
+</header>
+<!-- END HEADER NAV -->
+
+
+
+<!-- BEGIN MAIN SECTION -->
+<main class="bg-white">
+    <div class="container py-4 px-5">
+        <div class="row px-5">
+            <div class="col">
+<!-- RMARKDOWN OUTPUT BEGINS BELOW -->
+
+
+<!-- ============================================================================================ -->
+
+
+
+
+
+
+
+<h1 class="title toc-ignore">Combined Density/Box Plots</h1>
+<h4 class="author">David E. Lambert</h4>
+<h4 class="date">2019-07-02</h4>
+
+
+
+<p><em>Note: This post is also available as a functional RMarkdown notebook via GitHub at <a href="https://github.com/magickcicada/personal_site/tree/master/content/post/2019-07-02-combined-density-box-plots.Rmd">https://github.com/magickcicada/personal_site/tree/master/content/post/2019-07-02-combined-density-box-plots.Rmd</a></em></p>
+<p>I often find myself visualizing variable distributions in different ways for different reasons. One combination that comes up fairly often for me is to look at a continuous variable both in a density plot and in a box plot. A density plot provides a great overview and can easily reveal distribution characteristics like skew, extreme kurtosis, or multimodalism, some of which might not be easily visible in a box plot — or in a histogram with too few bins to capture small variations. Meanwhile, a box plot can reveal the presence and extent of extreme values (for a given definition of “extreme”) and key quantiles, characteristics that are not necessarily visible in a density plot.</p>
+<p>Since I found myself looking at both density and box plots for a given variable fairly often, I began using ggplot to combine them, as in the final plot at the bottom of this <a href="http://https://davidelambert.com/post/constructing-a-dataset-modified-hdi-covariates-from-census-bls-data/">Modified HDI construction post</a>. The following walks through the construction of the combined density/box plot, with modifications and speed improvements from the code in that post. I’ve also combined all of this code into an <a href="https://github.com/magickcicada/dbox">R package on GitHub</a> (v0.0.3 as of this writing).</p>
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>Ggplot is awesome. We love ggplot. Let’s load it, and <em>only</em> it, because I have a tendency to use other functions from <a href="https://www.tidyverse.org/">tidyverse</a> packages without thinking about it. (The restriction isn’t really necessary, but when doing initial development on the <a href="https://github.com/magickcicada/dbox">dbox package</a>, I was going for only one non-core dependency.)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
+<p>Let’s also randomly generate a distribution to experiment with. I’d like something that’s not quite a normal distribution and will almost surely include several outliers, a few of theme extreme. A log-normal distribution should fit the bill, giving us a right-skewed distribution. Instead of the usual base <em>e</em>, we’ll use base 1.36 (roughly half of <em>e</em>) for a somewhat less skew.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>lognorm &lt;-<span class="st"> </span><span class="fl">1.36</span><span class="op">^</span><span class="kw">rnorm</span>(<span class="dv">1000</span>)</span></code></pre></div>
+<p>As awesome as ggplot is, some of it’s idiosyncracies make it difficult to combine density and box plots out-of-the-box. Chiefly, the orientations of <code>geom_density()</code> and <code>geom_boxplot()</code> don’t match:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">x =</span> lognorm))</span></code></pre></div>
+<p><img src="assets/img/geom-mismatch-1.png" width="672" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> lognorm))</span></code></pre></div>
+<p><img src="assets/img/geom-mismatch-2.png" width="672" /></p>
+<p>For the two plots to be directly comparable, we need the same value — the value of the variable we’re looking at — on the same axis at the same scale. While ggplot provides <code>coord_flip()</code> to rotate plots, it can’t be applied to individual layers, only to the entire plot. And neither of the base geoms have internal options for orientation — supplying a <code>y</code> aesthetic to <code>geom_density()</code> or <code>x</code> to <code>geom_boxplot()</code> throws an error. So we’ll need an alternative.</p>
+<p>Now is also a good time to bring up a couple of other personal preference issues I have with the geom defaults that I’ll alter when constructing the combined plot. First, I’m not fond of the way <code>geom_density()</code> draws a border all the way around the plot — connecting the endpoints to the baseline. This is can be changed within ggplot by using <code>stat_density(geom = "line")</code>, but the same orientation issue applies. Second, the density of outliers a box plot can sometimes be difficult to discern because they are all plotted in the same plane as the whiskers. I prefer to plot the outliers separately and apply a jitter so their density is more visible, especially right near the “fences” at the ends of the whiskers.</p>
+</div>
+<div id="horizontal-density-plot" class="section level2">
+<h2>Horizontal Density Plot</h2>
+<p>The simplest and fastest way I know of to get around the orientation mismatch issue is to plot the density “horizontally”, that is, where y = the value of variable <strong><em>X</em></strong> and x = it’s density. This is easier and faster than drawing all elements of the box plot horizontally.</p>
+<p>To get the horizontal density plot, we’ll generate a data frame from <code>stats::density()</code>, using the default gaussian kernel, and the default N of 512 which I find gives a nice smooth set of points while being small enough to plot quite quickly. I’ll use the right-skewed distribution we generated above as <strong><em>X</em></strong>. (<code>na.omit()</code> is not strictly necessary here since we generated <code>lognorm</code> and know there are no missing values. But it’s good practice since missings cause errors in many plots.)</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>X &lt;-<span class="st"> </span><span class="kw">na.omit</span>(lognorm)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>dens &lt;-<span class="st"> </span><span class="kw">density</span>(X)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>ddf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>  <span class="dt">X =</span> dens<span class="op">$</span>x,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  <span class="dt">density =</span> dens<span class="op">$</span>y</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>)</span></code></pre></div>
+<p>Now we can plot the output of <code>density()</code> “horizontally” as described. We’ll use <code>geom_path()</code> to get only a line and avoid the connected polygon of <code>geom_density()</code> that I don’t particularly like. We’ll also supply <code>color</code> and <code>linetype</code> arguments to <code>aes()</code>, which will force them into the legend. (We’ll create scales to control the actual values of color &amp; linetype later).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>d &lt;-<span class="st"> </span><span class="kw">geom_path</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">data =</span> ddf,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> X, <span class="dt">color =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">linetype =</span> <span class="st">&quot;X&quot;</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  <span class="dt">size =</span> <span class="fl">1.1</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>d</span></code></pre></div>
+<p><img src="assets/img/density%20line%20plot-1.png" width="672" /></p>
+<p>We can also add a fill using <code>geom_polygon()</code>. (Getting the matching fill color’s hex value from ggplot defaults is from <a href="https://stackoverflow.com/questions/25211078/what-are-the-default-plotting-colors-in-r-or-ggplot2/25211125">this StackOverflow post</a>.) We’ll plot the fill first in the additive ggplot chain, so that it’s on a lower layer. This won’t matter if using the same color, as we are. But if you use a different colored fill, you would want the opaque outline plotted on top of the translucent fill to avoid transpency interaction.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">geom_polygon</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="dt">data =</span> ddf,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> X),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="ot">NA</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d</span></code></pre></div>
+<p><img src="assets/img/density%20fill-1.png" width="672" /></p>
+</div>
+<div id="add-box-plot" class="section level2">
+<h2>Add Box Plot</h2>
+<p>Now that we have a horizontal density plot, we can add the box plot and use <code>coord_flip()</code> to get the orientation into a form where <strong><em>X</em></strong> is on the x-axis. We’ll use <code>stat_boxplot()</code> instead of <code>geom_boxplot()</code> to allow us to tweak the location of the fences, and thus definition of outliers, via the <code>coef</code> argument. We’ll define a 1-element <code>fence_coef</code> vector here, starting with the box plot default of 1.5, so we can change it as desired and use it to define our outliers separately.</p>
+<p>We also need to make a couple of other tweaks to the box plot defaults:</p>
+<ul>
+<li>As we saw above, the default box plot is centered on x = 0 (y after <code>coord_flip()</code>), with a width (height) of ± 0.4. We want the boxplot to appear as a rug below the density plot, so we need to move the centerline and reduce the width (height). However, since the absolute max density will change depending on a given variable’s distribution, we need to position the box plot <em>relative</em> to <strong><em>X</em></strong>.
+<ul>
+<li>We’ll use <code>position_nudge()</code> to move the centerline left of (<em>below</em> after <code>coord_flip()</code>) 0 by 15% of the total width (height) of the density plot.</li>
+<li>We’ll alter the width (height) to 20% of the width (height) of the density plot. This is ± 10% from the centerline, leaving a gap of 5% between the left (bottom) of the density plot and the right (top) boundary of the box.</li>
+</ul></li>
+<li>We’ll omit the outliers with <code>outlier_shape = NA</code> so that we can plot them separately and jitter them around the centerline, as discussed above.</li>
+<li>We’ll leave the box unfilled, so we can plot the fill separately, and thus optionally, just like the density plot.</li>
+</ul>
+<p>All together, that comes to:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>fence_coef &lt;-<span class="st"> </span><span class="fl">1.5</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>b &lt;-<span class="st"> </span><span class="kw">stat_boxplot</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  <span class="dt">data =</span> <span class="ot">NULL</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">y =</span> X),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>  <span class="dt">coef =</span> fence_coef,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>  <span class="dt">outlier.shape =</span> <span class="ot">NA</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>  <span class="dt">width =</span> <span class="fl">.2</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>  <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="fl">-0.15</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/boxplot-1.png" width="672" /></p>
+<p>We can add the fill with an arbitrarily positioned rectangle via <code>annotate()</code>. We’ll get the y-coordinates (again, x-coordinates after <code>coord_flip</code>), which are the 1st and 3rd quartiles of <strong><em>X</em></strong>, from <code>quantiles</code>. The x- (y-) coordinates are the location of box plot centerline ± 10% of the width (height) of the density plot. For the same reasons as the density plot fill, we’ll want to plot the box plot fill before the box plot itself to get it on a lower layer.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>bf &lt;-<span class="st"> </span><span class="kw">annotate</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="dt">geom =</span> <span class="st">&quot;rect&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  <span class="dt">xmin =</span> <span class="fl">-.05</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  <span class="dt">xmax =</span> <span class="fl">-.25</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  <span class="dt">ymin =</span> <span class="kw">quantile</span>(X, <span class="fl">0.25</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  <span class="dt">ymax =</span> <span class="kw">quantile</span>(X, <span class="fl">0.75</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="ot">NA</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/boxplot%20fill-1.png" width="672" /></p>
+</div>
+<div id="outliers" class="section level2">
+<h2>Outliers</h2>
+<p>Now we need to define our outliers. We need to get the fence coefficient, which we defined above at the standard of 1.5. We also need the inter-quartile range of <strong><em>X</em></strong>, which we can get from <code>stats::IQR()</code>. We can use these two values, as well as the values of 1st and 3rd quartiles, to subset the outliers of <strong><em>X</em></strong>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>iqr &lt;-<span class="st"> </span><span class="kw">IQR</span>(X)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>outliers &lt;-<span class="st"> </span>X[X <span class="op">&lt;</span><span class="st"> </span>(<span class="kw">quantile</span>(X, <span class="fl">0.25</span>) <span class="op">-</span><span class="st"> </span>fence_coef <span class="op">*</span><span class="st"> </span>iqr) <span class="op">|</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="st">              </span>X <span class="op">&gt;</span><span class="st"> </span>(<span class="kw">quantile</span>(X, <span class="fl">0.75</span>) <span class="op">+</span><span class="st"> </span>fence_coef <span class="op">*</span><span class="st"> </span>iqr)]</span></code></pre></div>
+<p>Now we can plot the outliers using <code>geom_point()</code> and applying <code>position_jitter()</code>. We’ll jitter to 3/4 of the height of the box, or 7.5% of the height of the density plot. Note that it’s possible a distribution won’t have any outliers. When adding the outlier layer to the plot, we’ll wrap it in an <code>if</code> expression so that the layer only appears if there are, in fact, outliers.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>o &lt;-<span class="st">  </span><span class="kw">geom_point</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">y =</span> outliers, <span class="dt">x =</span> <span class="fl">-0.15</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density)),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>  <span class="dt">position =</span> <span class="kw">position_jitter</span>(<span class="dt">width =</span> <span class="fl">.075</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/plot%20outliers-1.png" width="672" /></p>
+<p>This allows us to more clearly visualize the density of outliers just outside the upper fence when compared to the basic box plot, where the outliers are all plotted along the centerline.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> X)) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/outlier%20comparison-1.png" width="672" /></p>
+</div>
+<div id="theming" class="section level2">
+<h2>Theming</h2>
+<p>We now have our combined density/box plot in pretty good shape, with each plot sharing a scale and providing their unique insights into the distribution. A few theme tweaks can make the plot more visually effective, IMHO.</p>
+<ul>
+<li>Combine the color &amp; linetype scales in the legend using the same (blank) <code>name</code> argument. Unless these aesthetics convey different information, they should be combined to avoid repetition &amp; clutter. In our case, the linetype aesthetic isn’t necessary, but I’ve included it to add further differentiation if we choose to include a normal density comparison plot, as we’ll do below. The simple legend should be self-explanatory, so we don’t need to add clutter with a legend title, hence the blank <code>name</code> argument.</li>
+<li>Switch to <code>theme_minimal()</code> for a starting point. I think the grey background in the default <code>theme_grey()</code> doesn’t add anything meaningful to the plot, and in some cases can distract from meaningful color in plots.</li>
+<li>Remove the y-axis title, scale, and grid. On it’s own, the absolute density of <strong><em>X</em></strong> doesn’t convey much useful meaning to the viewer, and the y-position of the boxplot doesn’t convey any meaning at all. We primarily care about the <em>relative</em> density of the distribution over the domain of <strong><em>X</em></strong>. So we can declutter by removing the y-axis scale labels and gridlines. Without those elements, the axis title isn’t very meaningful either, so we can remove it, too.</li>
+<li>Move legend to the bottom. Our pupose is to visualize the distribution of <strong><em>X</em></strong>, and we are displaying its scale in the horizontal dimension. So the greater the available space in the horizontal dimension, the greater the detail we can see in <strong><em>X</em></strong>. Moving the legend to the bottom of the plot gives us a more detailed visualization across the domain of <strong><em>X</em></strong> (as does removing the y-axis scale &amp; title).</li>
+<li>Remove the x-axis title. We know what <strong><em>X</em></strong> is from the legend, so we don’t need to add clutter by repeating it just above the legend.</li>
+<li>Optionally, remove the x-axis minor grid. This will depend on the domain of <strong><em>X</em></strong>, the meaningfulness of particular scale values , the automatic scale if you’re using it (as we are) and some degree of personal taste. The goal is, as ever, to minimize clutter. This is kind of a borderline case, as far as I’m concerned, and I’m opting to exclude the minor gridlines here.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># scales, combined by blank name argument.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>sc &lt;-<span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>, <span class="dt">values =</span> <span class="st">&quot;#F8766D&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>sl &lt;-<span class="st"> </span><span class="kw">scale_linetype_manual</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>, <span class="dt">values =</span> <span class="st">&quot;solid&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="co"># theme elements</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>t &lt;-<span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>    <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>    <span class="dt">axis.text.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>    <span class="dt">panel.grid.major.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>    <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>    <span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a>  )</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a><span class="st">  </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/theme-1.png" width="672" /></p>
+<p>This yields a nice, minimal, uncluttered plot, showing the overall shape of the distribution of <strong><em>X</em></strong>, its median, 1st, and 3rd quartiles, and an uncluttered view of extent and density of extreme values in the right tail. This is just what I want to see from a combined density/box plot.</p>
+</div>
+<div id="optional-normal-comparison-plot" class="section level2">
+<h2>Optional Normal Comparison Plot</h2>
+<p>Sometimes, it’s helpful to compare a variable’s density plot to a normal distribution with the same mean and standard deviation, for instance to see whether a transformation would be appropriate for linear modelling. We can add a normal density comparison plot in the same way we created the base density plot</p>
+<p>First, we’ll generate a data frame. We’ll use <code>seq()</code> to get 512 equally spaced values, centered at the mean of <strong><em>X</em></strong>, and spaced over ± 3.1 standard deviations of <strong><em>X</em></strong>. Then we’ll supply those values and the parameters of <strong><em>X</em></strong> to <code>dnorm()</code> to get normally-distributed density values, and combine these vetors into a small data frame.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>norm_x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">3.1</span>, <span class="fl">3.1</span>, <span class="dt">length.out =</span> <span class="dv">512</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(X) <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(X)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>norm_y &lt;-<span class="st"> </span><span class="kw">dnorm</span>(norm_x, <span class="kw">mean</span>(X), <span class="kw">sd</span>(X))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>ndf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>  <span class="dt">x =</span> norm_x,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>  <span class="dt">density =</span> norm_y</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>)</span></code></pre></div>
+<p>Now we can create a layer plotting this idealized normal distribution and add it to our ggplot chain. We’ll also need to tweak the color and linetype scales to accomodate this new line. In doing so, we’ll want to be specific about what layer gets what scale value, rather than relying on ggplot’s automatic assignment. Otherwise, the color of the <strong><em>X</em></strong> density plot might not always match that of the box plot.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="kw">geom_path</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>  <span class="dt">data =</span> ndf,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> x,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>      <span class="dt">color =</span> <span class="st">&quot;Comparison Normal Distribution&quot;</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>      <span class="dt">linetype =</span> <span class="st">&quot;Comparison Normal Distribution&quot;</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>  <span class="dt">size =</span> <span class="fl">1.1</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>sc &lt;-<span class="st"> </span><span class="kw">scale_color_manual</span>(</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>  <span class="dt">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>  <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;X&quot;</span> =<span class="st"> &quot;#F8766D&quot;</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>             <span class="st">&quot;Comparison Normal Distribution&quot;</span> =<span class="st"> &quot;#00BA38&quot;</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true"></a>sl &lt;-<span class="st"> </span><span class="kw">scale_linetype_manual</span>(</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true"></a>  <span class="dt">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true"></a>  <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;X&quot;</span> =<span class="st"> &quot;solid&quot;</span>,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true"></a>             <span class="st">&quot;Comparison Normal Distribution&quot;</span> =<span class="st"> &quot;twodash&quot;</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true"></a>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true"></a><span class="st">  </span>n <span class="op">+</span><span class="st"> </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/normal%20density%20plot%20&%20scales-1.png" width="672" /></p>
+</div>
+<div id="putting-it-all-together" class="section level2">
+<h2>Putting It All Together</h2>
+<p>If it wasn’t already obvious, adding the idealized normal distribution density curve makes the right-skew of <strong><em>X</em></strong> quite apparent. As a review/overview of the plot construction, let’s log-transform <strong><em>X</em></strong>, which we specifically generated to be log-normally distributed, and repeat each step.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co"># log transform X</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>logX &lt;-<span class="st"> </span><span class="kw">log</span>(X)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="co"># density data frame</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>dens &lt;-<span class="st"> </span><span class="kw">density</span>(logX)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>ddf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>  <span class="dt">logX =</span> dens<span class="op">$</span>x,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>  <span class="dt">density =</span> dens<span class="op">$</span>y</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="co"># density line plot</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>d &lt;-<span class="st"> </span><span class="kw">geom_path</span>(</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>  <span class="dt">data =</span> ddf,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> logX, <span class="dt">color =</span> <span class="st">&quot;log(X)&quot;</span>, <span class="dt">linetype =</span> <span class="st">&quot;log(X)&quot;</span>),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>  <span class="dt">size =</span> <span class="fl">1.1</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a><span class="co"># density fill</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">geom_polygon</span>(</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a>  <span class="dt">data =</span> ddf,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> logX),</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="ot">NA</span>,</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true"></a>)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true"></a><span class="co"># define fence coefficient, using the standard 1.5</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true"></a>fence_coef &lt;-<span class="st"> </span><span class="fl">1.5</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true"></a><span class="co"># box plot</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true"></a>b &lt;-<span class="st"> </span><span class="kw">stat_boxplot</span>(</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true"></a>  <span class="dt">data =</span> <span class="ot">NULL</span>,</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">y =</span> logX),</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true"></a>  <span class="dt">coef =</span> fence_coef,</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true"></a>  <span class="dt">outlier.shape =</span> <span class="ot">NA</span>,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true"></a>  <span class="dt">width =</span> <span class="fl">.2</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true"></a>  <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="fl">-0.15</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density))</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true"></a>)</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true"></a></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true"></a><span class="co"># box plot fill</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true"></a>bf &lt;-<span class="st"> </span><span class="kw">annotate</span>(</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true"></a>  <span class="dt">geom =</span> <span class="st">&quot;rect&quot;</span>,</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true"></a>  <span class="dt">xmin =</span> <span class="fl">-.05</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true"></a>  <span class="dt">xmax =</span> <span class="fl">-.25</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density),</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true"></a>  <span class="dt">ymin =</span> <span class="kw">quantile</span>(logX, <span class="fl">0.25</span>),</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true"></a>  <span class="dt">ymax =</span> <span class="kw">quantile</span>(logX, <span class="fl">0.75</span>),</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="ot">NA</span>,</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true"></a>  <span class="dt">fill =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true"></a>)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true"></a><span class="co"># define outliers</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true"></a>iqr &lt;-<span class="st"> </span><span class="kw">IQR</span>(logX)</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true"></a>outliers &lt;-<span class="st"> </span>logX[logX <span class="op">&lt;</span><span class="st"> </span>(<span class="kw">quantile</span>(logX, <span class="fl">0.25</span>) <span class="op">-</span><span class="st"> </span>fence_coef <span class="op">*</span><span class="st"> </span>iqr) <span class="op">|</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true"></a><span class="st">                 </span>logX <span class="op">&gt;</span><span class="st"> </span>(<span class="kw">quantile</span>(logX, <span class="fl">0.75</span>) <span class="op">+</span><span class="st"> </span>fence_coef <span class="op">*</span><span class="st"> </span>iqr)]</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true"></a></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true"></a><span class="co"># outliers plot</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true"></a>o &lt;-<span class="st">  </span><span class="kw">geom_point</span>(</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">y =</span> outliers, <span class="dt">x =</span> <span class="fl">-0.15</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density)),</span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true"></a>  <span class="dt">color =</span> <span class="st">&quot;#F8766D&quot;</span>,</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true"></a>  <span class="dt">alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true"></a>  <span class="dt">position =</span> <span class="kw">position_jitter</span>(<span class="dt">width =</span> <span class="fl">.075</span> <span class="op">*</span><span class="st"> </span><span class="kw">max</span>(ddf<span class="op">$</span>density))</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true"></a>)</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true"></a></span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true"></a><span class="co"># comparison normal distribution</span></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true"></a>norm_x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">3.1</span>, <span class="fl">3.1</span>, <span class="dt">length.out =</span> <span class="dv">512</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(logX) <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(logX)</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true"></a>norm_y &lt;-<span class="st"> </span><span class="kw">dnorm</span>(norm_x, <span class="kw">mean</span>(logX), <span class="kw">sd</span>(logX))</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true"></a>ndf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true"></a>  <span class="dt">logX =</span> norm_x,</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true"></a>  <span class="dt">density =</span> norm_y</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true"></a>)</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true"></a></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true"></a><span class="co"># comparison normal density plot</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="kw">geom_path</span>(</span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true"></a>  <span class="dt">data =</span> ndf,</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true"></a>  <span class="kw">aes</span>(<span class="dt">x =</span> density, <span class="dt">y =</span> logX,</span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true"></a>      <span class="dt">color =</span> <span class="st">&quot;Comparison Normal Distribution&quot;</span>,</span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true"></a>      <span class="dt">linetype =</span> <span class="st">&quot;Comparison Normal Distribution&quot;</span>),</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true"></a>  <span class="dt">size =</span> <span class="fl">1.1</span></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true"></a>)</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true"></a></span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true"></a></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true"></a><span class="co"># color scale</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true"></a>sc &lt;-<span class="st"> </span><span class="kw">scale_color_manual</span>(</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true"></a>  <span class="dt">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true"></a>  <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;log(X)&quot;</span> =<span class="st"> &quot;#F8766D&quot;</span>,</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true"></a>             <span class="st">&quot;Comparison Normal Distribution&quot;</span> =<span class="st"> &quot;#00BA38&quot;</span>)</span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true"></a></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true"></a>)</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true"></a></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true"></a><span class="co"># linetype scale</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true"></a>sl &lt;-<span class="st"> </span><span class="kw">scale_linetype_manual</span>(</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true"></a>  <span class="dt">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true"></a>  <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;log(X)&quot;</span> =<span class="st"> &quot;solid&quot;</span>,</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true"></a>             <span class="st">&quot;Comparison Normal Distribution&quot;</span> =<span class="st"> &quot;twodash&quot;</span>)</span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true"></a></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true"></a>)</span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true"></a></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true"></a><span class="co"># theme</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true"></a>t &lt;-<span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true"></a>    <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true"></a>    <span class="dt">axis.text.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true"></a>    <span class="dt">panel.grid.major.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true"></a>    <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true"></a>    <span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true"></a>  )</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true"></a></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true"></a><span class="co"># PLOT!</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true"></a><span class="st">  </span>n <span class="op">+</span><span class="st"> </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="assets/img/all%20together-1.png" width="672" /></p>
+<p>As expected, log-transforming <strong><em>X</em></strong> yields a distribution that matches up well with an idealized normal distribution.</p>
+</div>
+
+
+
+
+
+
+<!-- ======================================================== -->
+<!-- END RMD OUTPUT -->
+
+
+
+            </div>
+            <!-- END COL -->
+        </div>
+        <!-- END ROW -->
+    </div>
+    <!-- END CONTAINER -->
+</main>
+<!-- END MAIN SECTION -->
+
+
+<!-- FOOTER -->
+<footer class="bg-dark text-light" style="min-height: 100px;">
+    <div class="container py-4 px-3 px-lg-5">
+        <div class="row">
+            <div class="col py-3">
+                <p class="text-center text-light slab" style="font-size: 12px;">
+                    Copyright &copy; 2020 David E. Lambert
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JQUERY, BOOTSTRAP JS  -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
