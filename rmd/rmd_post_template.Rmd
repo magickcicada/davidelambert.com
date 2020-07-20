@@ -1,0 +1,20 @@
+---
+title: Combined Density/Box Plots
+author: David E. Lambert
+date: '2019-07-02'
+output:
+  html_document:
+    theme: null
+    highlight: null
+    includes:
+      in_header: assets/templates/rmd_head.html
+      before_body: assets/templates/rmd_pre.html
+      after_body: assets/templates/rmd_post.html
+    self_contained: false
+    lib_dir: assets/vendor/rmarkdown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.path = "assets/img/")
+```
+
