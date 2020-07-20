@@ -1,0 +1,279 @@
+:root {
+    --blue: #0b59b9;
+    --indigo: #04196d;
+    --purple: #25005b;
+    --pink: #f6bcba;
+    --red: #ea0000;
+    --orange: #ff6f00;
+    --yellow: #ffea40;
+    --green: #368b36;
+    --teal: #369187;
+    --cyan: #3697d9;
+    --white: #fcfbf9;
+    --black: #16120f;
+    --gray: #e6e3df;
+    --gray-dark: #aca095;
+
+    --brown-light: #c4b099;
+    --brown-dark: #5c4531;
+    --blue-muted: #1b4b6c;
+    --green-muted: #0b522e;
+    --red-muted: #811d1d;
+    --olive-muted: #758974;
+    --orange-muted: #ffa500;
+
+
+    --primary: var(--brown-light);
+    --secondary: var(--brown-dark);
+    --success: var(--green-muted);
+    --info: var(--blue-muted);
+    --warning: var(--orange-muted);
+    --danger: var(--red-muted);
+    --light: var(--gray);
+    --dark: var(--black);
+}
+
+
+
+/* BEGIN SOURCE VODE HIGHLIGHTING CUSTOMIZATIONS */
+
+code {
+    white-space: pre;
+}
+
+pre>code.sourceCode {
+    white-space: pre;
+    position: relative;
+}
+
+pre>code.sourceCode>span {
+    display: inline-block;
+    line-height: 1.25;
+}
+
+pre>code.sourceCode>span:empty {
+    height: 1.2em;
+}
+
+code.sourceCode>span {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+div.sourceCode {
+    margin: 1em 0;
+}
+
+pre.sourceCode {
+    margin: 0;
+    padding: 1rem 1.5rem;
+}
+
+@media screen {
+    div.sourceCode {
+        overflow: auto;
+    }
+}
+
+@media print {
+    pre>code.sourceCode {
+        white-space: pre-wrap;
+    }
+
+    pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+    }
+}
+
+pre.numberSource code {
+    counter-reset: source-line 0;
+}
+
+pre.numberSource code>span {
+    position: relative;
+    left: -4em;
+    counter-increment: source-line;
+}
+
+pre.numberSource code>span>a:first-child::before {
+    content: counter(source-line);
+    position: relative;
+    left: -1em;
+    text-align: right;
+    vertical-align: baseline;
+    border: none;
+    display: inline-block;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 0 4px;
+    width: 4em;
+    color: var(--gray-dark);
+}
+
+pre.numberSource {
+    margin-left: 3em;
+    border-left: 1px solid var(--gray-dark);
+    padding-left: 4px;
+}
+
+div.sourceCode {
+    background-color: var(--gray);
+}
+
+@media screen {
+    pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+    }
+}
+
+
+/* Alert */
+code span.al {
+    color: var(--red-muted);
+}
+
+/* Annotation */
+code span.an {
+    color: var(--brown-dark);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Attribute */
+code span.at {
+    color: var(--orange-muted);
+}
+
+/* BaseN */
+code span.bn {
+    color: var(--blue-muted);
+}
+
+/* ControlFlow */
+code span.cf {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+/* Char */
+code span.ch {
+    color: var(--green);
+}
+
+/* Constant */
+code span.cn {
+    color: var(--black);
+}
+
+/* Comment */
+code span.co {
+    color: var(--brown-dark);
+    font-style: italic;
+}
+
+/* CommentVar */
+code span.cv {
+    color: var(--brown-dark);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Documentation */
+code span.do {
+    color: var(--brown-dark);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* DataType */
+code span.dt {
+    color: var(--blue);
+}
+
+/* DecVal */
+code span.dv {
+    color: var(--blue-muted);
+}
+
+/* Error */
+code span.er {
+    color: var(--red-muted);
+    font-weight: bold;
+}
+
+/* Float */
+code span.fl {
+    color: var(--blue-muted);
+}
+
+/* Function */
+code span.fu {
+    color: var(--black);
+}
+
+/* Information */
+code span.in {
+    color: var(--brown-dark);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Keyword */
+code span.kw {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+/* Operator */
+code span.op {
+    color: var(--orange);
+    font-weight: bold;
+}
+
+/* Other */
+code span.ot {
+    color: var(--brown-dark);
+}
+
+/* Preprocessor */
+code span.pp {
+    color: var(--brown-dark);
+    font-style: italic;
+}
+
+/* SpecialChar */
+code span.sc {
+    color: var(--black);
+}
+
+/* SpecialString */
+code span.ss {
+    color: var(--green);
+}
+
+/* String */
+code span.st {
+    color: var(--green);
+}
+
+/* Variable */
+code span.va {
+    color: var(--black);
+}
+
+/* VerbatimString */
+code span.vs {
+    color: var(--green);
+}
+
+/* Warning */
+code span.wa {
+    color: var(--orange);
+    font-weight: bold;
+    font-style: italic;
+}
