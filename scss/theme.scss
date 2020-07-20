@@ -53,7 +53,7 @@ $body-bg: $light;
 $body-color: $dark;
 
 $link-color: lighten($red-muted, 15%);
-$link-hover-color: $red-muted;
+$link-hover-color: darken($link-color, 10%);
 
 
 

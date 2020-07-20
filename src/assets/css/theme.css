@@ -205,7 +205,7 @@ a {
 }
 
 a:hover {
-  color: #811d1d;
+  color: #962222;
   text-decoration: underline;
 }
 
@@ -3423,7 +3423,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:hover {
-  color: #811d1d;
+  color: #962222;
   text-decoration: underline;
 }
 
