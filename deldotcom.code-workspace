@@ -7,7 +7,7 @@
     "settings": {
         "liveServer.settings.CustomBrowser": "chrome",
         "liveServer.settings.fullReload": true,
-        "liveServer.settings.root": "./src",
+        "liveServer.settings.root": "./docs",
         "liveSassCompile.settings.includeItems": [
             "./scss/theme.scss",
             "./scss/bootstrap_source/bootstrap.scss"
@@ -20,12 +20,12 @@
             {
                 "format": "expanded",
                 "extensionName": ".css",
-                "savePath": "/src/assets/css"
+                "savePath": "/docs/assets/css"
             },
             {
                 "extensionName": ".min.css",
                 "format": "compressed",
-                "savePath": "/src/assets/css"
+                "savePath": "/docs/assets/css"
             }
         ],
         "liveSassCompile.settings.autoprefix": [
