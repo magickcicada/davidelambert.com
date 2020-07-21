@@ -10,3 +10,4 @@ wip/
 rmd/assets/
 
 .Rproj.user
+*.Rhistory
