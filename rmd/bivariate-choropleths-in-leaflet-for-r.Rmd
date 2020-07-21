@@ -1,22 +1,21 @@
 ---
-title: Interactive Bivariate Choropleths in Leaflet for R
+title: Combined Density/Box Plots
 author: David E. Lambert
-date: '2019-07-20'
-slug: bivarite-choropleths-in-leaflet-for-r
-categories:
-  - R
-  - Visualization
-tags:
-  - R
-  - Visualization
-image:
-  caption: ''
-  focal_point: ''
+date: '2019-07-02'
+output:
+  html_document:
+    theme: null
+    highlight: tango
+    includes:
+      in_header: assets/templates/rmd_head.html
+      before_body: assets/templates/rmd_pre.html
+      after_body: assets/templates/rmd_post.html
+    self_contained: false
+    lib_dir: assets/vendor/rmarkdown
 ---
 
 ```{r setup, include=FALSE}
-library(knitr)
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.path = "assets/img/")
 ```
 
 A few months back, [Timo Grossenbacher's excellent post](https://timogrossenbacher.ch/2019/04/bivariate-maps-with-ggplot2-and-sf/) about creating bivariate choropleths using ggplot2 made the rounds in [#rstats](https://twitter.com/hashtag/rstats) Twitter and elsewhere. That post, as well as his colleague [Angelo Zehr's article](https://www.srf.ch/news/schweiz/interaktive-karte-so-ungleich-ist-das-einkommen-in-der-schweiz-verteilt) with an interactive version, inspired me to create an interactive bivariate choropleth using [RStudio's frontend](https://rstudio.github.io/leaflet/) for [Leaflet.js](https://leafletjs.com/).
@@ -485,7 +484,7 @@ ggsave("alameda_income_legend.svg", plot = legend,
 
 We'll want our legend style to match the existing controls for layer switching, zoom, fullscreen, etc. For that, we'll need to replicate and slightly tweek those controls' CSS classes. Depending on a site's specific styling, these may need some additional tweaking, but adding these classes to your CSS should be a good start.
 
-```
+``` 
 .legend-bivar {
   padding: 2px;
   font: 10px Arial, Helvetica, sans-serif;

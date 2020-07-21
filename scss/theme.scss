@@ -67,7 +67,7 @@ $code-color: $blue;
 
 // TYPOGRAPHY
 // =====================
-$font-family-sans-serif: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-serif: "Zilla Slab", "American Typewriter", Georgia, "Times New Roman", Times, serif;
 $font-family-monospace: "IBM Plex Mono", "American Typrewriter", "Courier New", monospace;
 $font-family-base: $font-family-sans-serif;
@@ -112,20 +112,30 @@ $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3
 // BODY/TOP-LEVEL STYLES
 // ==========================================================
 
-// Maxx 900px body width
+// Maxx 900px body width, auto horizontal margins
 body {
 	width: 100%; 
+	margin-right: auto;
+	margin-left: auto;
 }
 
 @media (min-width: 960px) {
 	body {
 		max-width: 900px;
+		margin-right: auto !important;
+		margin-left: auto !important;
 	}
 }
 
 // Slab-serif font
 .slab {
 	font-family: 'Zilla Slab';
+}
+
+
+// increase break space before h2 headers
+h2, .h2 {
+	margin-top: $spacer * 3 !important;
 }
 
 
