@@ -171,7 +171,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
                             <a href="/projects/" class="menu-link">Projects</a>
                         </li>
                         <li>
-                            <a href="/portfolio/" class="menu-link text-light">Portfolio</a>
+                            <a href="/portfolio/" class="menu-link">Portfolio</a>
                         </li>
                         <li>
                             <a href="/posts/" class="menu-link text-light">Posts</a>
@@ -638,7 +638,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
 <span id="cb24-16"><a href="#cb24-16" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span>
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span></code></pre></div>
-<p><img src="/assets/img/earnings%20model%20plot-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/earnings%20model%20plot-1.png" width="672" /></p>
 <p>OLS looks decent enough to me, with plenty of data &amp; considerable overlap in the low $32,000 <code>awage</code> range. We’ll run a simple regression to get predicted median earnings for Daggett County’s average wages.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a>emod_model &lt;-<span class="st"> </span><span class="kw">lm</span>(medearn <span class="op">~</span><span class="st"> </span>awage, <span class="dt">data =</span> emod_df)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a></span>
@@ -1215,7 +1215,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb55-24"><a href="#cb55-24" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
 <span id="cb55-25"><a href="#cb55-25" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span>
 <span id="cb55-26"><a href="#cb55-26" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span></code></pre></div>
-<p><img src="/assets/img/mort%20model%20plot-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/mort%20model%20plot-1.png" width="672" /></p>
 <p>All models closely align at the dense center of the data, but the the quadratic model performs much better at the extremes relative to the LOESS fit than does the linear model. Therefore, I believe that we should model AAMR as a quadratic function of LEB to impute the missing counties’ values.</p>
 <p>Let’s go ahead and run the regression.</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true"></a>rwjf<span class="op">$</span>lebsq &lt;-<span class="st"> </span>rwjf<span class="op">$</span>leb<span class="op">^</span><span class="dv">2</span></span>
@@ -1364,7 +1364,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb64-11"><a href="#cb64-11" aria-hidden="true"></a><span class="co">##    267    281    302    316    447</span></span></code></pre></div>
 <p>There seem to be quite a few extreme upper outliers, indicating a pretty hefty left skew, which we’ll confirm with a quick, ugly density plot.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true"></a><span class="kw">density</span>(cnty<span class="op">$</span>raamr) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot</span>()</span></code></pre></div>
-<p><img src="/assets/img/mort%20density-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/mort%20density-1.png" width="672" /></p>
 <p>Yep! So let’s log-transform the reciprocal age-adjusted mortality rates, which is quite the mouthful, and check the quantiles and density plot on that.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true"></a>cnty<span class="op">$</span>lraamr &lt;-<span class="st"> </span><span class="kw">log</span>(cnty<span class="op">$</span>raamr)</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true"></a></span>
@@ -1373,7 +1373,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb66-5"><a href="#cb66-5" aria-hidden="true"></a><span class="co">## 3.85 4.58 4.66 4.72 4.77 4.82 4.87 4.92 4.98 5.09 6.10</span></span>
 <span id="cb66-6"><a href="#cb66-6" aria-hidden="true"></a></span>
 <span id="cb66-7"><a href="#cb66-7" aria-hidden="true"></a><span class="kw">density</span>(cnty<span class="op">$</span>lraamr) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot</span>()</span></code></pre></div>
-<p><img src="/assets/img/mort%20log-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/mort%20log-1.png" width="672" /></p>
 <p>Much better. Let’s set our goalposts a little outside the max &amp; min &amp; <strong><em>FINALLY</em></strong> construct the actual index.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true"></a>healthmin &lt;-<span class="st"> </span><span class="fl">3.5</span></span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true"></a>healthmax &lt;-<span class="st"> </span><span class="fl">6.25</span></span>
@@ -1417,7 +1417,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb68-21"><a href="#cb68-21" aria-hidden="true"></a></span>
 <span id="cb68-22"><a href="#cb68-22" aria-hidden="true"></a></span>
 <span id="cb68-23"><a href="#cb68-23" aria-hidden="true"></a><span class="kw">density</span>(cnty<span class="op">$</span>ger) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot</span>()</span></code></pre></div>
-<p><img src="/assets/img/enrollment%20check-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/enrollment%20check-1.png" width="672" /></p>
 <p>The MoA minimum goalpost is 0.6, and we can see we have a few counties in the bottom 0.25% that fall below that threshold. The goalposts were set using state-level aggregates, which wouldn’t necessarily be all that responsive to a few lower outliers. The density plot looks pretty symmetric (with the right tail truncated because of the topcoding). We’ll try bottom-coding just barely above the MoA goalpost at .601 so we don’t get any index values below 0.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true"></a>cnty &lt;-<span class="st"> </span>cnty <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
@@ -1550,7 +1550,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb74-35"><a href="#cb74-35" aria-hidden="true"></a>    <span class="dt">axis.line.x.bottom =</span> <span class="kw">element_line</span>(<span class="dt">color =</span> <span class="st">&quot;grey90&quot;</span>),</span>
 <span id="cb74-36"><a href="#cb74-36" aria-hidden="true"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
 <span id="cb74-37"><a href="#cb74-37" aria-hidden="true"></a>  )</span></code></pre></div>
-<p><img src="/assets/img/component%20boxplots-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/component%20boxplots-1.png" width="672" /></p>
 <p>This looks pretty good to me. It closely follows the visualization on <a href="https://mk0moaorgidkh7gsb4pe.kinstacdn.com/wp-content/uploads/2009/05/measureofamerica_methodology.pdf">page 210 of the original report’s methodology section</a> (<a href="https://web.archive.org/web/20190616184126/https://mk0moaorgidkh7gsb4pe.kinstacdn.com/wp-content/uploads/2009/05/measureofamerica_methodology.pdf">archive</a>). There are some outliers above 10 on the Education Index, but that’s OK since they probably represent advances beyond the goalposts set in 2005 (which, remember, appear to have been set from state-level aggregates).</p>
 <p>So now, at long last, we’ll construct our Modified HDI:</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true"></a>cnty &lt;-<span class="st"> </span>cnty <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1642,7 +1642,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb76-80"><a href="#cb76-80" aria-hidden="true"></a>    <span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),</span>
 <span id="cb76-81"><a href="#cb76-81" aria-hidden="true"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
 <span id="cb76-82"><a href="#cb76-82" aria-hidden="true"></a>  )</span></code></pre></div>
-<p><img src="/assets/img/hdi%20viz-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/hdi%20viz-1.png" width="672" /></p>
 <p>A bit right-skewed, which is probably to be expected.</p>
 </div>
 </div>

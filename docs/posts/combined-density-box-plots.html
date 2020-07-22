@@ -16,7 +16,7 @@
 
 <title>Combined Density/Box Plots</title>
 
-<script src="assets/vendor/rmarkdown/header-attrs-2.3/header-attrs.js"></script>
+<script src="/assets/vendor/rmarkdown/header-attrs-2.3/header-attrs.js"></script>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Zilla+Slab:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/theme.min.css">
@@ -171,7 +171,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
                             <a href="/projects/" class="menu-link">Projects</a>
                         </li>
                         <li>
-                            <a href="/portfolio/" class="menu-link text-light">Portfolio</a>
+                            <a href="/portfolio/" class="menu-link">Portfolio</a>
                         </li>
                         <li>
                             <a href="/posts/" class="menu-link text-light">Posts</a>
@@ -231,9 +231,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>lognorm &lt;-<span class="st"> </span><span class="fl">1.36</span><span class="op">^</span><span class="kw">rnorm</span>(<span class="dv">1000</span>)</span></code></pre></div>
 <p>As awesome as ggplot is, some of it’s idiosyncracies make it difficult to combine density and box plots out-of-the-box. Chiefly, the orientations of <code>geom_density()</code> and <code>geom_boxplot()</code> don’t match:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">x =</span> lognorm))</span></code></pre></div>
-<p><img src="assets/img/geom-mismatch-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/geom-mismatch-1.png" width="672" /></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> lognorm))</span></code></pre></div>
-<p><img src="assets/img/geom-mismatch-2.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/geom-mismatch-2.png" width="672" /></p>
 <p>For the two plots to be directly comparable, we need the same value — the value of the variable we’re looking at — on the same axis at the same scale. While ggplot provides <code>coord_flip()</code> to rotate plots, it can’t be applied to individual layers, only to the entire plot. And neither of the base geoms have internal options for orientation — supplying a <code>y</code> aesthetic to <code>geom_density()</code> or <code>x</code> to <code>geom_boxplot()</code> throws an error. So we’ll need an alternative.</p>
 <p>Now is also a good time to bring up a couple of other personal preference issues I have with the geom defaults that I’ll alter when constructing the combined plot. First, I’m not fond of the way <code>geom_density()</code> draws a border all the way around the plot — connecting the endpoints to the baseline. This is can be changed within ggplot by using <code>stat_density(geom = "line")</code>, but the same orientation issue applies. Second, the density of outliers a box plot can sometimes be difficult to discern because they are all plotted in the same plane as the whiskers. I prefer to plot the outliers separately and apply a jitter so their density is more visible, especially right near the “fences” at the ends of the whiskers.</p>
 </div>
@@ -257,7 +257,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>)</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>d</span></code></pre></div>
-<p><img src="assets/img/density%20line%20plot-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/density%20line%20plot-1.png" width="672" /></p>
 <p>We can also add a fill using <code>geom_polygon()</code>. (Getting the matching fill color’s hex value from ggplot defaults is from <a href="https://stackoverflow.com/questions/25211078/what-are-the-default-plotting-colors-in-r-or-ggplot2/25211125">this StackOverflow post</a>.) We’ll plot the fill first in the additive ggplot chain, so that it’s on a lower layer. This won’t matter if using the same color, as we are. But if you use a different colored fill, you would want the opaque outline plotted on top of the translucent fill to avoid transpency interaction.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">geom_polygon</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="dt">data =</span> ddf,</span>
@@ -268,7 +268,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d</span></code></pre></div>
-<p><img src="assets/img/density%20fill-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/density%20fill-1.png" width="672" /></p>
 </div>
 <div id="add-box-plot" class="section level2">
 <h2>Add Box Plot</h2>
@@ -298,7 +298,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/boxplot-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/boxplot-1.png" width="672" /></p>
 <p>We can add the fill with an arbitrarily positioned rectangle via <code>annotate()</code>. We’ll get the y-coordinates (again, x-coordinates after <code>coord_flip</code>), which are the 1st and 3rd quartiles of <span class="math inline">\(X\)</span>, from <code>quantiles</code>. The x- (y-) coordinates are the location of box plot centerline ± 10% of the width (height) of the density plot. For the same reasons as the density plot fill, we’ll want to plot the box plot fill before the box plot itself to get it on a lower layer.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>bf &lt;-<span class="st"> </span><span class="kw">annotate</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="dt">geom =</span> <span class="st">&quot;rect&quot;</span>,</span>
@@ -312,7 +312,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>)</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/boxplot%20fill-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/boxplot%20fill-1.png" width="672" /></p>
 </div>
 <div id="outliers" class="section level2">
 <h2>Outliers</h2>
@@ -329,10 +329,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/plot%20outliers-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/plot%20outliers-1.png" width="672" /></p>
 <p>This allows us to more clearly visualize the density of outliers just outside the upper fence when compared to the basic box plot, where the outliers are all plotted along the centerline.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> X)) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/outlier%20comparison-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/outlier%20comparison-1.png" width="672" /></p>
 </div>
 <div id="theming" class="section level2">
 <h2>Theming</h2>
@@ -362,7 +362,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a></span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a><span class="st">  </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/theme-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/theme-1.png" width="672" /></p>
 <p>This yields a nice, minimal, uncluttered plot, showing the overall shape of the distribution of <span class="math inline">\(X\)</span>, its median, 1st, and 3rd quartiles, and an uncluttered view of extent and density of extreme values in the right tail. This is just what I want to see from a combined density/box plot.</p>
 </div>
 <div id="optional-normal-comparison-plot" class="section level2">
@@ -400,7 +400,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true"></a></span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true"></a><span class="st">  </span>n <span class="op">+</span><span class="st"> </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/normal%20density%20plot%20&%20scales-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/normal%20density%20plot%20&%20scales-1.png" width="672" /></p>
 </div>
 <div id="putting-it-all-together" class="section level2">
 <h2>Putting It All Together</h2>
@@ -519,7 +519,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-112"><a href="#cb16-112" aria-hidden="true"></a><span class="co"># PLOT!</span></span>
 <span id="cb16-113"><a href="#cb16-113" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>df <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span>bf <span class="op">+</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span>{<span class="cf">if</span> (<span class="kw">length</span>(outliers) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) o} <span class="op">+</span><span class="st"> </span></span>
 <span id="cb16-114"><a href="#cb16-114" aria-hidden="true"></a><span class="st">  </span>n <span class="op">+</span><span class="st"> </span>sc <span class="op">+</span><span class="st"> </span>sl <span class="op">+</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
-<p><img src="assets/img/all%20together-1.png" width="672" /></p>
+<p><img class="img-fluid" src="/assets/img/all%20together-1.png" width="672" /></p>
 <p>As expected, log-transforming <span class="math inline">\(X\)</span> yields a distribution that matches up well with an idealized normal distribution.</p>
 </div>
 
