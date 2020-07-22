@@ -1,14 +1,12 @@
 body {
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0 auto !important;
 }
 
 @media (min-width: 960px) {
   body {
     max-width: 900px;
-    margin-right: auto !important;
-    margin-left: auto !important;
+    margin: 0 auto !important;
   }
 }
 
