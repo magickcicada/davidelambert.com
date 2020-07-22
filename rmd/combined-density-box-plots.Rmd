@@ -36,7 +36,7 @@ Ggplot is awesome. We love ggplot. Let's load it, and _only_ it, because I have 
 library(ggplot2)
 ```
 
-Let's also randomly generate a distribution to experiment with. I'd like something that's not quite a normal distribution and will almost surely include several outliers, a few of theme extreme. A log-normal distribution should fit the bill, giving us a right-skewed distribution. Instead of the usual base _e_, we'll use base 1.36 (roughly half of _e_) for a somewhat less skew.
+Let's also randomly generate a distribution to experiment with. I'd like something that's not quite a normal distribution and will almost surely include several outliers, a few of theme extreme. A log-normal distribution should fit the bill, giving us a right-skewed distribution. Instead of the usual base $e$, we'll use base 1.36 (roughly half of $e$) for a somewhat less skew.
 
 ```{r test dists}
 lognorm <- 1.36^rnorm(1000)
@@ -57,9 +57,9 @@ Now is also a good time to bring up a couple of other personal preference issues
 
 ## Horizontal Density Plot
 
-The simplest and fastest way I know of to get around the orientation mismatch issue is to plot the density "horizontally", that is, where y = the value of variable __*X*__ and x = it's density. This is easier and faster than drawing all elements of the box plot horizontally.
+The simplest and fastest way I know of to get around the orientation mismatch issue is to plot the density "horizontally", that is, where y = the value of variable $X$ and x = it's density. This is easier and faster than drawing all elements of the box plot horizontally.
 
-To get the horizontal density plot, we'll generate a data frame from `stats::density()`, using the default gaussian kernel, and the default N of 512 which I find gives a nice smooth set of points while being small enough to plot quite quickly. I'll use the right-skewed distribution we generated above as __*X*__. (`na.omit()` is not strictly necessary here since we generated `lognorm` and know there are no missing values. But it's good practice since missings cause errors in many plots.)
+To get the horizontal density plot, we'll generate a data frame from `stats::density()`, using the default gaussian kernel, and the default N of 512 which I find gives a nice smooth set of points while being small enough to plot quite quickly. I'll use the right-skewed distribution we generated above as $X$. (`na.omit()` is not strictly necessary here since we generated `lognorm` and know there are no missing values. But it's good practice since missings cause errors in many plots.)
 
 ```{r density data frame}
 X <- na.omit(lognorm)
@@ -106,11 +106,11 @@ ggplot() + df + d
 
 ## Add Box Plot
 
-Now that we have a horizontal density plot, we can add the box plot and use `coord_flip()` to get the orientation into a form where __*X*__ is on the x-axis. We'll use `stat_boxplot()` instead of `geom_boxplot()` to allow us to tweak the location of the fences, and thus definition of outliers, via the `coef` argument. We'll define a 1-element `fence_coef` vector here, starting with the box plot default of 1.5, so we can change it as desired and use it to define our outliers separately.
+Now that we have a horizontal density plot, we can add the box plot and use `coord_flip()` to get the orientation into a form where $X$ is on the x-axis. We'll use `stat_boxplot()` instead of `geom_boxplot()` to allow us to tweak the location of the fences, and thus definition of outliers, via the `coef` argument. We'll define a 1-element `fence_coef` vector here, starting with the box plot default of 1.5, so we can change it as desired and use it to define our outliers separately.
 
 We also need to make a couple of other tweaks to the box plot defaults:
 
-* As we saw above, the default box plot is centered on x = 0 (y after `coord_flip()`), with a width (height) of &plusmn; 0.4. We want the boxplot to appear as a rug below the density plot, so we need to move the centerline and reduce the width (height). However, since the absolute max density will change depending on a given variable's distribution, we need to position the box plot _relative_ to __*X*__. 
+* As we saw above, the default box plot is centered on x = 0 (y after `coord_flip()`), with a width (height) of &plusmn; 0.4. We want the boxplot to appear as a rug below the density plot, so we need to move the centerline and reduce the width (height). However, since the absolute max density will change depending on a given variable's distribution, we need to position the box plot _relative_ to $X$. 
   * We'll use `position_nudge()` to move the centerline left of (_below_ after `coord_flip()`) 0 by 15% of the total width (height) of the density plot.
   * We'll alter the width (height) to 20% of the width (height) of the density plot. This is &plusmn; 10% from the centerline, leaving a gap of 5% between the left (bottom) of the density plot and the right (top) boundary of the box.
 * We'll omit the outliers with `outlier_shape = NA` so that we can plot them separately and jitter them around the centerline, as discussed above.
@@ -135,7 +135,7 @@ ggplot() + df + d + b + coord_flip()
 ```
 
 
-We can add the fill with an arbitrarily positioned rectangle via `annotate()`. We'll get the y-coordinates (again, x-coordinates after `coord_flip`), which are the 1st and 3rd quartiles of __*X*__, from `quantiles`. The x- (y-) coordinates are the location of box plot centerline &plusmn; 10% of the width (height) of the density plot. For the same reasons as the density plot fill, we'll want to plot the box plot fill before the box plot itself to get it on a lower layer.
+We can add the fill with an arbitrarily positioned rectangle via `annotate()`. We'll get the y-coordinates (again, x-coordinates after `coord_flip`), which are the 1st and 3rd quartiles of $X$, from `quantiles`. The x- (y-) coordinates are the location of box plot centerline &plusmn; 10% of the width (height) of the density plot. For the same reasons as the density plot fill, we'll want to plot the box plot fill before the box plot itself to get it on a lower layer.
 
 ```{r boxplot fill}
 bf <- annotate(
@@ -156,7 +156,7 @@ ggplot() + df + d + bf + b + coord_flip()
 
 ## Outliers
 
-Now we need to define our outliers. We need to get the fence coefficient, which we defined above at the standard of 1.5. We also need the inter-quartile range of __*X*__, which we can get from `stats::IQR()`. We can use these two values, as well as the values of 1st and 3rd quartiles, to subset the outliers of __*X*__.
+Now we need to define our outliers. We need to get the fence coefficient, which we defined above at the standard of 1.5. We also need the inter-quartile range of $X$, which we can get from `stats::IQR()`. We can use these two values, as well as the values of 1st and 3rd quartiles, to subset the outliers of $X$.
 
 ```{r compute outliers}
 iqr <- IQR(X)
@@ -193,10 +193,10 @@ We now have our combined density/box plot in pretty good shape, with each plot s
 
 * Combine the color & linetype scales in the legend using the same (blank) `name` argument. Unless these aesthetics convey different information, they should be combined to avoid repetition & clutter. In our case, the linetype aesthetic isn't necessary, but I've included it to add further differentiation if we choose to include a normal density comparison plot, as we'll do below. The simple legend should be self-explanatory, so we don't need to add clutter with a legend title, hence the blank `name` argument.
 * Switch to `theme_minimal()` for a starting point. I think the grey background in the default `theme_grey()` doesn't add anything meaningful to the plot, and in some cases can distract from meaningful color in plots.
-* Remove the y-axis title, scale, and grid. On it's own, the absolute density of __*X*__ doesn't convey much useful meaning to the viewer, and the y-position of the boxplot doesn't convey any meaning at all. We primarily care about the _relative_ density of the distribution over the domain of __*X*__. So we can declutter by removing the y-axis scale labels and gridlines. Without those elements, the axis title isn't very meaningful either, so we can remove it, too.
-* Move legend to the bottom. Our pupose is to visualize the distribution of __*X*__, and we are displaying its scale in the horizontal dimension. So the greater the available space in the horizontal dimension, the greater the detail we can see in __*X*__. Moving the legend to the bottom of the plot gives us a more detailed visualization across the domain of __*X*__ (as does removing the y-axis scale & title).
-* Remove the x-axis title. We know what __*X*__ is from the legend, so we don't need to add clutter by repeating it just above the legend.
-* Optionally, remove the x-axis minor grid. This will depend on the domain of __*X*__, the meaningfulness of particular scale values , the automatic scale if you're using it (as we are) and some degree of personal taste. The goal is, as ever, to minimize clutter. This is kind of a borderline case, as far as I'm concerned, and I'm opting to exclude the minor gridlines here.
+* Remove the y-axis title, scale, and grid. On it's own, the absolute density of $X$ doesn't convey much useful meaning to the viewer, and the y-position of the boxplot doesn't convey any meaning at all. We primarily care about the _relative_ density of the distribution over the domain of $X$. So we can declutter by removing the y-axis scale labels and gridlines. Without those elements, the axis title isn't very meaningful either, so we can remove it, too.
+* Move legend to the bottom. Our pupose is to visualize the distribution of $X$, and we are displaying its scale in the horizontal dimension. So the greater the available space in the horizontal dimension, the greater the detail we can see in $X$. Moving the legend to the bottom of the plot gives us a more detailed visualization across the domain of $X$ (as does removing the y-axis scale & title).
+* Remove the x-axis title. We know what $X$ is from the legend, so we don't need to add clutter by repeating it just above the legend.
+* Optionally, remove the x-axis minor grid. This will depend on the domain of $X$, the meaningfulness of particular scale values , the automatic scale if you're using it (as we are) and some degree of personal taste. The goal is, as ever, to minimize clutter. This is kind of a borderline case, as far as I'm concerned, and I'm opting to exclude the minor gridlines here.
 
 
 ```{r theme}
@@ -220,14 +220,14 @@ ggplot() + df + d + bf + b + {if (length(outliers) > 0) o} +
 ```
 
 
-This yields a nice, minimal, uncluttered plot, showing the overall shape of the distribution of __*X*__, its median, 1st, and 3rd quartiles, and an uncluttered view of extent and density of extreme values in the right tail. This is just what I want to see from a combined density/box plot.
+This yields a nice, minimal, uncluttered plot, showing the overall shape of the distribution of $X$, its median, 1st, and 3rd quartiles, and an uncluttered view of extent and density of extreme values in the right tail. This is just what I want to see from a combined density/box plot.
 
 
 ## Optional Normal Comparison Plot
 
 Sometimes, it's helpful to compare a variable's density plot to a normal distribution with the same mean and standard deviation, for instance to see whether a transformation would be appropriate for linear modelling. We can add a normal density comparison plot in the same way we created the base density plot
 
-First, we'll generate a data frame. We'll use `seq()` to get 512 equally spaced values, centered at the mean of __*X*__, and spaced over &plusmn; 3.1 standard deviations of __*X*__. Then we'll supply those values and the parameters of __*X*__ to `dnorm()` to get normally-distributed density values, and combine these vetors into a small data frame.
+First, we'll generate a data frame. We'll use `seq()` to get 512 equally spaced values, centered at the mean of $X$, and spaced over &plusmn; 3.1 standard deviations of $X$. Then we'll supply those values and the parameters of $X$ to `dnorm()` to get normally-distributed density values, and combine these vetors into a small data frame.
 
 ```{r normal density values}
 norm_x <- seq(-3.1, 3.1, length.out = 512) * sd(X) + mean(X)
@@ -240,7 +240,7 @@ ndf <- data.frame(
 
 
 
-Now we can create a layer plotting this idealized normal distribution and add it to our ggplot chain. We'll also need to tweak the color and linetype scales to accomodate this new line. In doing so, we'll want to be specific about what layer gets what scale value, rather than relying on ggplot's automatic assignment. Otherwise, the color of the __*X*__ density plot might not always match that of the box plot.
+Now we can create a layer plotting this idealized normal distribution and add it to our ggplot chain. We'll also need to tweak the color and linetype scales to accomodate this new line. In doing so, we'll want to be specific about what layer gets what scale value, rather than relying on ggplot's automatic assignment. Otherwise, the color of the $X$ density plot might not always match that of the box plot.
 
 ```{r normal density plot & scales}
 n <- geom_path(
@@ -272,7 +272,7 @@ ggplot() + df + d + bf + b + {if (length(outliers) > 0) o} +
 
 ## Putting It All Together
 
-If it wasn't already obvious, adding the idealized normal distribution density curve makes the right-skew of __*X*__ quite apparent. As a review/overview of the plot construction, let's log-transform __*X*__, which we specifically generated to be log-normally distributed, and repeat each step.
+If it wasn't already obvious, adding the idealized normal distribution density curve makes the right-skew of $X$ quite apparent. As a review/overview of the plot construction, let's log-transform $X$, which we specifically generated to be log-normally distributed, and repeat each step.
 
 ```{r all together}
 # log transform X
@@ -393,4 +393,4 @@ ggplot() + df + d + bf + b + {if (length(outliers) > 0) o} +
 
 ```
 
-As expected, log-transforming __*X*__ yields a distribution that matches up well with an idealized normal distribution.
+As expected, log-transforming $X$ yields a distribution that matches up well with an idealized normal distribution.
