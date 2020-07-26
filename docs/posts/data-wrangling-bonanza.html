@@ -638,7 +638,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
 <span id="cb24-16"><a href="#cb24-16" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span>
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true"></a><span class="co">## `geom_smooth()` using formula &#39;y ~ x&#39;</span></span></code></pre></div>
-<p><img class="img-fluid" src="/assets/img/earnings%20model%20plot-1.png" width="672" /></p>
+<p><img class="img-fluid img-thumbnail" src="/assets/img/earnings%20model%20plot-1.png" width="100%" /></p>
 <p>OLS looks decent enough to me, with plenty of data &amp; considerable overlap in the low $32,000 <code>awage</code> range. We’ll run a simple regression to get predicted median earnings for Daggett County’s average wages.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a>emod_model &lt;-<span class="st"> </span><span class="kw">lm</span>(medearn <span class="op">~</span><span class="st"> </span>awage, <span class="dt">data =</span> emod_df)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a></span>
